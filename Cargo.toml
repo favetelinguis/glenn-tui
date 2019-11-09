@@ -9,9 +9,12 @@ edition = "2018"
 [dependencies]
 config = "0.9"
 log = "0.4.8"
-env_logger = "0.7.1"
+stderrlog = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 failure = "0.1.5"
 exitfailure = "0.5.1"
+tui = "0.5"
+termion = "1.5"
 rusoto_core = "0.41.0"
 rusoto_ssm = "0.41.0"
+structopt = "0.2.10"

@@ -21,5 +21,11 @@ Create a config file `config/clients.json` with the following structure.
 }
 ```
 
-To enable logging set env:
-RUST_LOG=debug
+### Usage
+To run with logs
+`cargo run -- --log 2> error.log`
+
+To run without logs
+`cargo run`
+
+Once started switch tabs with `right|left-arrow` quit using `q`.
