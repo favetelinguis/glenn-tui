@@ -13,3 +13,5 @@ env_logger = "0.7.1"
 serde = { version = "1.0", features = ["derive"] }
 failure = "0.1.5"
 exitfailure = "0.5.1"
+rusoto_core = "0.41.0"
+rusoto_ssm = "0.41.0"
