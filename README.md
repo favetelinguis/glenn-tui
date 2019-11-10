@@ -2,7 +2,6 @@
 Multi account multi role aws admin tool
 
 ## Roadmap
-- Read config from `~/.config/glenn-tui`.
 - Setup clients for each client in config.
 - Given a search path and a set of clients use `get-parameters-by-path`.
 - Integrate with our git-secrets lib to update secrets.
