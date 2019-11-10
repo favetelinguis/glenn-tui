@@ -45,6 +45,9 @@ fn main() -> Result<(), ExitFailure> {
     debug!("Config {:?}", settings);
 
     let clients = &Clients::new(settings);
+    for c in clients.available_clients() {
+        println!("Client name: {}", c);
+    }
 
     let events = Events::with_config(Config {
         tick_rate: Duration::from_millis(cli.tick_rate),

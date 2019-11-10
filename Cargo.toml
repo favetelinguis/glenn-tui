@@ -7,16 +7,28 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Config
 config = "0.9"
+serde = { version = "1.0", features = ["derive"] }
+dirs = "2.0.2"
+# Log
 log = "0.4.8"
 stderrlog = "0.4"
-serde = { version = "1.0", features = ["derive"] }
+# Error handling
 failure = "0.1.5"
 exitfailure = "0.5.1"
+# TUI
 tui = "0.5"
 termion = "1.5"
+# AWS
+hyper = "0.12"
+hyper-proxy = "0.5.0"
+hyper-tls = "0.3.1"
 rusoto_core = "0.41.0"
+rusoto_credential = "0.41.0"
+rusoto_sts = "0.41.0"
 rusoto_ssm = "0.41.0"
+# CLI
 structopt = "0.2.10"
 
 [[bin]]

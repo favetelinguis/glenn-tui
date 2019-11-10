@@ -4,20 +4,21 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
 pub struct Role {
-    arn: String,
-    region: String,
+    pub name: String,
+    pub arn: String,
+    pub region: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Account {
-    key: String,
-    secret: String,
-    roles: Vec<Role>,
+    pub key: String,
+    pub secret: String,
+    pub roles: Vec<Role>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
-    clients: Vec<Account>,
+    pub clients: Vec<Account>,
     test: usize,
 }
 
