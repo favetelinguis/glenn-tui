@@ -9,7 +9,7 @@ Multi account multi role aws admin tool
 - Poll `describe-services` for a set of clients to monitor deployments 
 
 ### Setup
-Create a config file `config/clients.json` with the following structure.
+Create a config file `~/.config/glenn/clients.json` with the following structure.
 
 ```json
 {

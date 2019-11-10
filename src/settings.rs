@@ -24,9 +24,14 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
+        let mut config_path = dirs::home_dir().unwrap();
+        config_path.push(".config");
+        config_path.push("glenn");
+        config_path.push("clients");
+
         let mut s = Config::new();
-        s.merge(File::with_name("config/default"))?;
-        s.merge(File::with_name("config/clients"))?;
+        s.merge(File::with_name("config/default").required(true))?;
+        s.merge(File::from(config_path).required(false))?;
 
         s.try_into()
     }
