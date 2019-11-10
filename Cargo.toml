@@ -1,5 +1,5 @@
 [package]
-name = "glenn-rs"
+name = "glenn-tui"
 version = "0.1.0"
 authors = ["Henrik Larsson <reg@henkelarsson.se>"]
 edition = "2018"
@@ -18,3 +18,8 @@ termion = "1.5"
 rusoto_core = "0.41.0"
 rusoto_ssm = "0.41.0"
 structopt = "0.2.10"
+
+[[bin]]
+bench = false
+path = "src/main.rs"
+name = "glenn"
