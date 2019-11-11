@@ -18,6 +18,7 @@ Create a config file `~/.config/glenn/clients.json` with the following structure
       "secret": "<AWS_SECRET>",
       "roles": [
         {
+          "name": "<YOUR_IDENTIFIER>",
           "arn": "<ROLE_ARN>",
           "region": "<AWS_REGION>" 
         }
