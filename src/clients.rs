@@ -45,11 +45,11 @@ impl<'a> Clients<'a> {
             client_ids}
     }
 
-    pub fn available_clients(self: &Self) -> &Vec<&str> {
+    pub fn available_clients(&self) -> &Vec<&str> {
         &self.client_ids
     }
 
-    pub fn create_ssm_client(self: &Self, id: &str) -> SsmClient {
+    pub fn create_ssm_client(&self, id: &str) -> SsmClient {
         let credentials = self.clients.get(id).unwrap();
         let client = HttpClient::from_connector(build_proxy_connector());
         SsmClient::new_with(
@@ -58,7 +58,7 @@ impl<'a> Clients<'a> {
             , build_region(credentials.region))
     }
 
-    pub fn create_ssm_clients(self: &Self, ids: &Vec<&str>) -> Vec<SsmClient> {
+    pub fn create_ssm_clients(&self, ids: &Vec<&str>) -> Vec<SsmClient> {
         let mut clients = vec![];
         for id in ids {
             clients.push(self.create_ssm_client(id));
