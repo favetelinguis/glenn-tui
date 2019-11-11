@@ -27,6 +27,7 @@ use tui::backend::TermionBackend;
 use tui::layout::{Constraint, Direction, Layout};
 use tui::widgets::{Block, Borders, Widget};
 use tui::Terminal;
+use rusoto_ssm::{Ssm, GetParametersByPathRequest};
 
 #[derive(Debug, StructOpt)]
 struct Cli {
@@ -45,8 +46,14 @@ fn main() -> Result<(), ExitFailure> {
     debug!("Config {:?}", settings);
 
     let clients = &Clients::new(settings);
-    for c in clients.available_clients() {
-        println!("Client name: {}", c);
+    let available_clients = clients.available_clients();
+    for c in clients.create_ssm_clients(available_clients) {
+        let mut request = GetParametersByPathRequest::default();
+        request.with_decryption = Some(true);
+        request.recursive = Some(true);
+        request.path = "/dpap/".to_string();
+        let response = c.get_parameters_by_path(request).sync().unwrap();
+        println!("Parameters: {:?}: ", response.parameters.unwrap());
     }
 
     let events = Events::with_config(Config {

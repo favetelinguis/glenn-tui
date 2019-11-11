@@ -10,33 +10,33 @@ use hyper_tls::HttpsConnector;
 use hyper::client::connect::dns::GaiResolver;
 use std::str::FromStr;
 
-pub struct BaseClientCredentials {
-    access_key: String,
-    secret: String,
-    role_arn: String,
-    region: String,
+pub struct BaseClientCredentials<'a> {
+    access_key: &'a str,
+    secret: &'a str,
+    role_arn: &'a str,
+    region: &'a str,
 }
 
-pub struct Clients {
-    clients: HashMap<String, BaseClientCredentials>,
-    client_ids: Vec<String>,
+pub struct Clients<'a> {
+    clients: HashMap<&'a str, BaseClientCredentials<'a>>,
+    client_ids: Vec<&'a str>,
 }
 
-impl Clients {
-    pub fn new(settings: &Settings) -> Self {
-        let mut clients = HashMap::new();
-        let mut client_ids = Vec::new();
+impl<'a> Clients<'a> {
+    pub fn new(settings: &'a Settings) -> Self {
+        let mut clients: HashMap<&str, BaseClientCredentials> = HashMap::new();
+        let mut client_ids: Vec<&str> = Vec::new();
 
         for account in &settings.clients {
             for role in &account.roles {
                 let client = BaseClientCredentials {
-                    access_key: account.key.to_owned(),
-                    secret: account.secret.to_owned(),
-                    role_arn: role.arn.to_owned(),
-                    region: role.region.to_owned(),
+                    access_key: &account.key,
+                    secret: &account.secret,
+                    role_arn: &role.arn,
+                    region: &role.region,
                 };
-                client_ids.push(role.name.to_owned());
-                clients.insert(role.name.to_owned(), client);
+                client_ids.push(&role.name);
+                clients.insert(&role.name, client);
             }
         }
 
@@ -45,17 +45,25 @@ impl Clients {
             client_ids}
     }
 
-    pub fn available_clients(self: &Self) -> &Vec<String> {
+    pub fn available_clients(self: &Self) -> &Vec<&str> {
         &self.client_ids
     }
 
-    pub fn create_ssm_client(self: &Self, id: String) -> SsmClient {
-        let credentials = self.clients.get(id.as_str()).unwrap();
+    pub fn create_ssm_client(self: &Self, id: &str) -> SsmClient {
+        let credentials = self.clients.get(id).unwrap();
         let client = HttpClient::from_connector(build_proxy_connector());
         SsmClient::new_with(
         client,
-            build_provider(credentials.role_arn.to_owned(), build_region(credentials.region.as_str()), credentials.access_key.to_owned(), credentials.secret.to_owned())
-            , build_region(credentials.region.as_str()))
+            build_provider(credentials.role_arn, build_region(credentials.region), credentials.access_key, credentials.secret)
+            , build_region(credentials.region))
+    }
+
+    pub fn create_ssm_clients(self: &Self, ids: &Vec<&str>) -> Vec<SsmClient> {
+        let mut clients = vec![];
+        for id in ids {
+            clients.push(self.create_ssm_client(id));
+        }
+        clients
     }
 }
 
@@ -83,14 +91,14 @@ fn build_region(region: &str) -> Region {
     Region::from_str(region).unwrap()
 }
 
-fn build_provider(role_arn: String, region: Region, access_key: String, secret: String) -> AutoRefreshingProvider<StsAssumeRoleSessionCredentialsProvider> {
-    let credentials_provider = StaticProvider::new(access_key, secret, None, None);
+fn build_provider(role_arn: &str, region: Region, access_key: &str, secret: &str) -> AutoRefreshingProvider<StsAssumeRoleSessionCredentialsProvider> {
+    let credentials_provider = StaticProvider::new(access_key.to_owned(), secret.to_owned(), None, None);
     let client = HttpClient::from_connector(build_proxy_connector());
     let sts = StsClient::new_with(client, credentials_provider, region);
 
     let provider = StsAssumeRoleSessionCredentialsProvider::new(
         sts,
-        role_arn,
+        role_arn.to_owned(),
         "default".to_owned(),
         None, None, None, None,
     );
