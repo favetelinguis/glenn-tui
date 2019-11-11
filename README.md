@@ -27,6 +27,10 @@ Create a config file `~/.config/glenn/clients.json` with the following structure
 }
 ```
 
+On WSL Ubuntu: <br>
+Need this: `sudo apt install libssl-dev`<br>
+Might also need this: `sudo apt install pkg-config`
+
 ### Usage
 To run with logs
 `cargo run -- --log 2> error.log`
