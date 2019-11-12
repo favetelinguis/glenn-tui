@@ -1,17 +1,20 @@
 use crate::util::TabsState;
+use crate::clients::Clients;
 
 pub struct App<'a> {
     pub title: &'a str,
     pub should_quit: bool,
     pub tabs: TabsState<'a>,
+    pub clients: Clients<'a>,
 }
 
 impl<'a> App<'a> {
-    pub fn new(title: &'a str) -> App<'a> {
+    pub fn new(title: &'a str, clients: Clients<'a>) -> App<'a> {
         App {
             title,
             should_quit: false,
             tabs: TabsState::new(vec!["Parameter Store", "ECS Service"]),
+            clients,
         }
     }
 

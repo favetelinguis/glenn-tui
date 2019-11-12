@@ -1,5 +1,4 @@
-use crate::demo::App;
-
+use crate::app::{App};
 use std::io;
 use tui::backend::Backend;
 use tui::layout::{Constraint, Direction, Layout, Rect};
