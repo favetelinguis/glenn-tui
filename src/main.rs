@@ -51,6 +51,7 @@ fn main() -> Result<(), ExitFailure> {
         .after_help("All config should be placed in ~/.config/glenn/")
         .get_matches();
 
+    // TODO this broke when i added ClapApp
     let cli = Cli::from_args();
     stderrlog::new().quiet(!cli.log).verbosity(4).init()?;
 
