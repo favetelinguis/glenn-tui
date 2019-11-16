@@ -29,7 +29,7 @@ rusoto_credential = "0.41.0"
 rusoto_sts = "0.41.0"
 rusoto_ssm = "0.41.0"
 # CLI
-structopt = "0.2.10"
+clap = "2.33.0"
 
 [[bin]]
 bench = false

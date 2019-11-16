@@ -22,8 +22,7 @@ use log::{debug, info};
 use rusoto_ssm::{GetParametersByPathRequest, Ssm};
 use std::io;
 use std::time::Duration;
-use structopt::clap::App as ClapApp;
-use structopt::StructOpt;
+use clap::App as ClapApp;
 use termion::event::Key;
 use termion::input::MouseTerminal;
 use termion::raw::IntoRawMode;
@@ -32,14 +31,6 @@ use tui::backend::TermionBackend;
 use tui::layout::{Constraint, Direction, Layout};
 use tui::widgets::{Block, Borders, Widget};
 use tui::Terminal;
-
-#[derive(Debug, StructOpt)]
-struct Cli {
-    #[structopt(long = "tick-rate", default_value = "250")]
-    tick_rate: u64,
-    #[structopt(long = "log")]
-    log: bool,
-}
 
 fn main() -> Result<(), ExitFailure> {
     ClapApp::new(env!("CARGO_PKG_NAME"))
@@ -51,9 +42,8 @@ fn main() -> Result<(), ExitFailure> {
         .after_help("All config should be placed in ~/.config/glenn/")
         .get_matches();
 
-    // TODO this broke when i added ClapApp
-    let cli = Cli::from_args();
-    stderrlog::new().quiet(!cli.log).verbosity(4).init()?;
+    // quite should come as a line arg
+    stderrlog::new().quiet(false).verbosity(4).init()?;
 
     info!("Starting glenn-rs");
     let settings = &Settings::new()?;
